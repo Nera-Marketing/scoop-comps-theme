@@ -1,0 +1,6 @@
+@import 'tailwindcss';
+
+@source "../../**/*.php";
+@source "../../Components/**/*.twig";
+@source "../../../nera-competitions-standard/**/*.php";
+@source "../assets/**/*.js";

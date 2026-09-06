@@ -1,0 +1,171 @@
+{#
+  About — view data contract (authoritative source: index.php get_data() PHPDoc)
+  Child themes may override this view; data is provided by the parent's get_data().
+  key              type                                          req/opt   default       note
+  badge            string                                        required              e.g. 'Who We Are'
+  title            string                                        required
+  subtitle         string                                        required
+  description      string (wp_kses_post)                         required
+  features         list<{icon:string,text:string,delay:string}>  required  []
+  show_cta         bool                                          required  true
+  cta_text         string                                        required
+  cta_url          string                                        required  '/about/'
+  image_url        string                                        required  ''            empty = placeholder shown
+  image_alt        string                                        required
+  bg_class         string                                        required
+  text_order       string                                        required  'order-1'     Tailwind order class for text column
+  image_order      string                                        required  'order-2'     Tailwind order class for image column
+  orb_top_class    string                                        required              Tailwind positioning class for top decorative orb
+  orb_bottom_class string                                        required              Tailwind positioning class for bottom decorative orb
+  stat_number      string                                        required  injected
+  stat_label       string                                        required  injected
+  image_placeholder string                                       required  injected
+#}
+<section class="about-section-premium py-16 lg:py-28 {{ bg_class }} relative overflow-hidden"
+  id="about-us" data-aos="fade-up">
+
+  <!-- Decorative Background Elements -->
+  <div class="absolute inset-0 pointer-events-none overflow-hidden opacity-30">
+    <!-- Blue accent orb -->
+    <div class="absolute {{ orb_top_class }} w-96 h-96 bg-gradient-to-br from-primary/20 via-primary/10 to-transparent rounded-full blur-3xl"></div>
+    <!-- Secondary orb -->
+    <div class="absolute bottom-1/4 {{ orb_bottom_class }} w-80 h-80 bg-gradient-to-tl from-primary/10 to-transparent rounded-full blur-3xl"></div>
+  </div>
+
+  <div class="max-w-6xl mx-auto px-4 lg:px-8 relative z-10">
+
+    <!-- 50/50 Grid Layout -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+
+      <!-- Text Content Column -->
+      <div class="{{ text_order }} space-y-6 about-text-content">
+
+        <!-- Badge with blue accent -->
+        {% if badge %}
+          <div class="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-gradient-to-r from-primary/10 to-primary/10 border border-primary/20 about-badge">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-primary">
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="currentColor" />
+            </svg>
+            <span class="text-xs font-bold uppercase tracking-widest text-primary">{{ badge }}</span>
+          </div>
+        {% endif %}
+
+        <!-- Title -->
+        <h2 class="font-heading text-4xl lg:text-5xl xl:text-6xl font-black text-text-primary leading-[1.1] tracking-tight about-title">
+          {{ title }}{% if heading_highlight %} <span style="{{ heading_accent_style|raw }}">{{ heading_highlight }}</span>{% endif %}
+        </h2>
+
+        <!-- Subtitle with blue accent -->
+        {% if subtitle %}
+          <p class="text-xl lg:text-2xl font-semibold text-primary leading-relaxed about-subtitle">
+            {{ subtitle }}
+          </p>
+        {% endif %}
+
+        <!-- Decorative divider -->
+        <div class="flex items-center gap-3 about-divider">
+          <div class="w-12 h-px bg-gradient-to-r from-primary to-transparent"></div>
+          <div class="w-2 h-2 rounded-full bg-primary"></div>
+          <div class="w-12 h-px bg-gradient-to-l from-primary to-transparent"></div>
+        </div>
+
+        <!-- Description -->
+        <div class="text-lg text-text-secondary leading-relaxed prose prose-lg max-w-none about-description">
+          {{ description|raw }}
+        </div>
+
+        <!-- Feature List -->
+        {% if features|length > 0 %}
+          <ul class="space-y-3.5 pt-2 about-features">
+            {% for feature in features %}
+              <li class="flex items-start gap-3.5 group about-feature-item"
+                  style="animation-delay: {{ feature.delay }};">
+                <span class="flex-shrink-0 w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white group-hover:scale-110 transition-all duration-300">
+                  <span class="material-symbols-outlined" style="font-size: 16px; font-variation-settings: 'FILL' 1;">
+                    {{ feature.icon }}
+                  </span>
+                </span>
+                <span class="text-base lg:text-lg font-medium text-text-primary pt-0.5">
+                  {{ feature.text }}
+                </span>
+              </li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+
+        <!-- CTA Button -->
+        {% if show_cta %}
+          <div class="mt-5 about-cta">
+            <a href="{{ cta_url }}"
+              class="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-primary to-primary text-white font-semibold rounded-xl shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-1 transition-all duration-300 group relative overflow-hidden">
+              <span class="relative z-10">{{ cta_text }}</span>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                class="relative z-10 transition-transform duration-300 group-hover:translate-x-1">
+                <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              <!-- Shine effect -->
+              <span class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></span>
+            </a>
+          </div>
+        {% endif %}
+
+      </div>
+
+      <!-- Image Column -->
+      <div class="{{ image_order }} relative about-image-container">
+
+        <!-- Decorative frame element -->
+        <div class="absolute -inset-6 border border-primary/10 rounded-3xl transform rotate-2 about-frame"></div>
+        <div class="absolute -inset-4 bg-gradient-to-br from-primary/5 to-primary/5 rounded-3xl blur-2xl opacity-60"></div>
+
+        <!-- Main image container -->
+        <div class="relative rounded-2xl overflow-hidden shadow-2xl shadow-primary/10 group border-4 border-white about-image-wrapper">
+          {% if image_url %}
+            <div class="aspect-[4/5] overflow-hidden">
+              <img src="{{ image_url }}" alt="{{ image_alt }}"
+                class="w-full h-full object-cover transition-transform duration-[800ms] ease-out group-hover:scale-105 about-image"
+                loading="lazy" />
+            </div>
+          {% else %}
+            <!-- Placeholder -->
+            <div class="aspect-[4/5] bg-gradient-to-br from-gray-100 via-secondary/30 to-gray-50 flex items-center justify-center">
+              <div class="text-center space-y-4">
+                <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="0.5"
+                  class="text-gray-300 mx-auto">
+                  <rect x="3" y="3" width="18" height="18" rx="2" />
+                  <circle cx="8.5" cy="8.5" r="1.5" />
+                  <polyline points="21 15 16 10 5 21" />
+                </svg>
+                <p class="text-sm text-gray-400 font-medium">{{ image_placeholder }}</p>
+              </div>
+            </div>
+          {% endif %}
+
+          <!-- Subtle gradient overlay -->
+          <div class="absolute inset-0 bg-gradient-to-t from-primary/5 via-transparent to-transparent pointer-events-none"></div>
+        </div>
+
+        <!-- Floating credibility badge -->
+        <div class="absolute -bottom-8 -left-8 bg-surface rounded-2xl p-6 lg:p-8 shadow-2xl shadow-primary/10 border border-secondary hidden lg:block about-floating-badge">
+          <div class="flex items-center gap-5">
+            <div class="w-16 h-16 bg-gradient-to-br from-primary to-primary rounded-2xl flex items-center justify-center shadow-lg shadow-primary/30">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+              </svg>
+            </div>
+            <div>
+              <div class="text-4xl font-black text-text-primary font-heading">{{ stat_number }}<span class="text-primary">+</span></div>
+              <div class="text-xs font-bold text-text-secondary uppercase tracking-wider mt-1">{{ stat_label }}</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Decorative corner accent -->
+        <div class="absolute top-4 right-4 w-16 h-16 border-t-2 border-r-2 border-primary/20 rounded-tr-2xl about-corner-accent"></div>
+
+      </div>
+
+    </div>
+
+  </div>
+</section>

@@ -1,0 +1,45 @@
+{#
+  NeraWhyChooseUs — view data contract (authoritative source: index.php get_data() PHPDoc)
+  Markup parity with template-parts/product-listing/trust-features.php
+  key       type                                                              req/opt
+  title     string                                                            required
+  subtitle  string                                                            required
+  items     list<{icon: string, title: string, description: string}>          required
+#}
+<section class="py-16 md:py-20 bg-surface">
+  <div class="max-w-7xl mx-auto px-4 lg:px-0">
+
+    <div class="text-center mb-12">
+      <h2 class="text-2xl md:text-3xl font-extrabold text-text-primary tracking-tight" data-aos="fade-up">
+        {{ title|e('html') }}
+      </h2>
+      {% if subtitle %}
+        <p class="text-text-secondary font-medium mt-2 max-w-xl mx-auto" data-aos="fade-up" data-aos-delay="100">
+          {{ subtitle|e('html') }}
+        </p>
+      {% endif %}
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      {% for feature in items %}
+        <div
+          class="text-center p-8 bg-background-light rounded-2xl border border-gray-100 hover:border-primary/20 hover:shadow-lg transition-all duration-300"
+          data-aos="fade-up" data-aos-delay="{{ loop.index * 100 }}">
+
+          <div class="inline-flex items-center justify-center w-16 h-16 bg-primary/10 text-primary rounded-2xl mb-5">
+            {{ feature.icon|raw }}
+          </div>
+
+          <h3 class="text-lg font-bold text-text-primary mb-2">
+            {{ feature.title|e('html') }}
+          </h3>
+
+          <p class="text-text-secondary text-sm leading-relaxed">
+            {{ feature.description|e('html') }}
+          </p>
+        </div>
+      {% endfor %}
+    </div>
+
+  </div>
+</section>

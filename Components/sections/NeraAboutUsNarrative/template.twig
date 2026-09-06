@@ -1,0 +1,24 @@
+{#
+  NeraAboutUsNarrative — view data contract (authoritative source: index.php get_data() PHPDoc)
+  key                         type     req/opt
+  narrative                   string   required  (wp_kses_post HTML)
+  i18n.narrative_label        string   required
+  i18n.narrative_placeholder  string   required
+#}
+<section class="py-16 lg:py-24 border-y border-gray-200 bg-surface" aria-labelledby="about-us-narrative">
+  <div class="max-w-7xl mx-auto px-4 lg:px-0">
+    <div id="about-us-narrative" class="sr-only">{{ i18n.narrative_label }}</div>
+    <div data-aos="fade-up">
+      {% if narrative %}
+        <div
+          class="prose prose-lg max-w-none prose-headings:font-heading prose-headings:text-text-primary prose-p:text-text-secondary prose-a:text-primary prose-strong:text-text-primary">
+          {{ narrative|raw }}
+        </div>
+      {% else %}
+        <p class="text-center italic text-text-secondary/70">
+          {{ i18n.narrative_placeholder }}
+        </p>
+      {% endif %}
+    </div>
+  </div>
+</section>

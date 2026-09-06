@@ -1,0 +1,78 @@
+{#
+  QuickGuide — child view override (parent get_data + nera_component_data_QuickGuide)
+  key       type                                                                       req/opt   default
+  title     string                                                                     required
+  subtitle  string                                                                     required
+  steps     list<{number:string,icon:string,title:string,description:string}>           required
+  cta_text  string                                                                     required  Browse Competitions
+  cta_url   string                                                                     required  all-competitions permalink
+#}
+<section class="quick-guide-section py-16 lg:py-24 bg-gradient-to-b from-surface to-gray-50" id="quick-guide"
+  data-aos="fade-up">
+  <div class="max-w-6xl mx-auto px-4 lg:px-8">
+
+    <div class="text-center mb-12 lg:mb-16">
+      <span
+        class="inline-block px-4 py-1.5 mb-4 text-sm font-semibold text-primary bg-primary/5 rounded-full border border-primary/10">
+        Quick Guide
+      </span>
+      <h2 class="font-heading text-3xl lg:text-4xl xl:text-5xl font-bold text-text-primary mb-4">
+        {{ title }}{% if heading_highlight %} <span style="{{ heading_accent_style|raw }}">{{ heading_highlight }}</span>{% endif %}
+      </h2>
+      <p class="text-lg text-text-secondary text-center">
+        {{ subtitle }}
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+      {% for step in steps %}
+        <div class="quick-guide-card group relative">
+          <div
+            class="relative h-full bg-surface rounded-2xl p-8 border border-gray-100 shadow-sm transition-all duration-300 hover:shadow-xl hover:border-primary/20 hover:-translate-y-1">
+
+            <div
+              class="absolute -top-3 -right-3 w-12 h-12 bg-primary text-white rounded-xl flex items-center justify-center font-bold text-sm shadow-lg shadow-primary/25 group-hover:scale-110 transition-transform duration-300">
+              {{ step.number }}
+            </div>
+
+            <div
+              class="w-16 h-16 mb-6 rounded-xl bg-primary/5 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all duration-300">
+              {{ step.icon|raw }}
+            </div>
+
+            <h3 class="text-xl font-bold text-text-primary mb-3">
+              {{ step.title }}
+            </h3>
+
+            <p class="text-text-secondary leading-relaxed">
+              {{ step.description }}
+            </p>
+
+          </div>
+
+          {% if not loop.last %}
+            <div class="hidden md:flex absolute top-1/2 -right-4 lg:-right-5 transform -translate-y-1/2 z-10">
+              <svg class="w-6 h-6 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+              </svg>
+            </div>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+
+    <!-- Section footer CTA -->
+    {% if cta_text %}
+    <div class="text-center mt-12">
+      <a href="{{ cta_url }}"
+        class="inline-flex items-center gap-2 px-8 py-4 bg-primary text-white font-semibold rounded-xl shadow-lg shadow-primary/25 hover:bg-primary-dark hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300">
+        <span>{{ cta_text }}</span>
+        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+        </svg>
+      </a>
+    </div>
+    {% endif %}
+
+  </div>
+</section>

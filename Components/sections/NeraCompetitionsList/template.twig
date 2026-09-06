@@ -1,0 +1,9 @@
+{#
+  NeraCompetitionsList — view data contract (authoritative source: index.php get_data() PHPDoc)
+  Renders the parent advanced-filter competitions grid via PHP template part.
+  key          type    req/opt   default
+  empty_title  string  required  'No competitions found'
+  empty_text   string  required  'Check back soon for new amazing prizes!'
+  html         string  required  buffered categories-filter markup
+#}
+{{ html|raw }}

@@ -1,0 +1,10 @@
+{#
+  NeraWinnersList — view data contract (authoritative source: index.php get_data() PHPDoc)
+  Renders the parent winners grid (manual or dynamic) via captured PHP.
+  empty_title / empty_text are bridged into the parent empty-state reads.
+  key          type    req/opt   default
+  empty_title  string  required
+  empty_text   string  required  ''
+  grid_html    string  required  trusted parent markup (includes Alpine)
+#}
+{{ grid_html|raw }}

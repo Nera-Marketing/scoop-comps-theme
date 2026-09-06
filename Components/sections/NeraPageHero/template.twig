@@ -1,0 +1,43 @@
+{#
+  NeraPageHero — view data contract (authoritative source: index.php get_data() PHPDoc)
+  Markup parity with template-parts/components/shared/page-hero.php.
+  key            type    req/opt   default   note
+  title          string  required
+  description    string  required
+  variant        string  required  default   default | compact
+  eyebrow_label  string  required  ''        empty = no pill
+  eyebrow_icon   string  required  ''        Material Symbols ligature
+#}
+{% set is_compact = variant == 'compact' %}
+<section class="{{ is_compact ? 'py-10 sm:py-16 md:py-20' : 'py-16 md:py-20' }} bg-gradient-to-br from-primary via-primary to-primary-dark">
+  <div class="{{ is_compact ? 'max-w-[1200px] mx-auto px-3 sm:px-4 lg:px-8' : 'max-w-[1200px] mx-auto px-4 lg:px-8' }}">
+    <div class="text-center max-w-2xl mx-auto">
+      {% if eyebrow_label %}
+        <div class="flex justify-center mb-6" data-aos="fade-up">
+          <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-on-primary/15 text-on-primary border border-on-primary/25 text-sm font-semibold">
+            {% if eyebrow_icon %}
+              <span class="material-symbols-outlined text-base" style="font-variation-settings:'FILL' 1">{{ eyebrow_icon|e('html') }}</span>
+            {% endif %}
+            {{ eyebrow_label|e('html') }}
+          </span>
+        </div>
+      {% endif %}
+
+      <h1
+        class="{{ is_compact ? 'text-3xl sm:text-4xl md:text-5xl lg:text-6xl' : 'text-4xl md:text-5xl lg:text-6xl' }} font-extrabold text-on-primary tracking-tight mb-4"
+        data-aos="fade-up"
+        {% if eyebrow_label %} data-aos-delay="100"{% endif %}>
+        {{ title|e('html') }}
+      </h1>
+
+      {% if description %}
+        <p
+          class="text-lg md:text-xl font-medium text-on-primary/80"
+          data-aos="fade-up"
+          data-aos-delay="{{ eyebrow_label ? '200' : '100' }}">
+          {{ description|e('html') }}
+        </p>
+      {% endif %}
+    </div>
+  </div>
+</section>

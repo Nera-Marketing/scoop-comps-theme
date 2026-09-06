@@ -1,0 +1,8 @@
+{#
+  NeraClosedPrizesList — view data contract (authoritative source: index.php get_data() PHPDoc)
+  key          type    req/opt   default
+  empty_title  string  required  'No closed prizes yet'
+  empty_text   string  required  'Check back after our competitions have drawn their winners.'
+  html         string  required  buffered prizes-grid markup
+#}
+{{ html|raw }}

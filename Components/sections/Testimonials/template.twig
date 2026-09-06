@@ -1,0 +1,83 @@
+{#
+  Testimonials — child view override (parent get_data + nera_component_data_Testimonials)
+  key               type                                                                     req/opt   default
+  title             string                                                                   required
+  subtitle          string                                                                   required
+  list              list<{name:string,avatar:string,quote:string,prize:string,prize_url:string,initial:string}>  required
+  won_label         string                                                                   required  Won:
+  footer_link_text  string                                                                   required  Read more winner stories
+  footer_link_url   string                                                                   required  winners page or #winners
+#}
+<section class="stories-section py-16 lg:py-24" id="stories" data-aos="fade-up">
+  <div class="max-w-6xl mx-auto px-4 lg:px-8">
+
+    <!-- Section Header -->
+    <div class="text-center mb-12 lg:mb-16">
+      <span class="inline-block px-4 py-1.5 mb-4 text-sm font-semibold text-primary bg-primary/5 rounded-full border border-primary/10">
+        Winner Stories
+      </span>
+      <h2 class="font-heading text-3xl lg:text-4xl xl:text-5xl font-bold text-text-primary mb-4">
+        {{ title }}{% if heading_highlight %} <span style="{{ heading_accent_style|raw }}">{{ heading_highlight }}</span>{% endif %}
+      </h2>
+      <p class="text-lg text-text-secondary text-center">
+        {{ subtitle }}
+      </p>
+    </div>
+
+    <!-- Stories Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+      {% for story in list %}
+        <div class="story-card group relative">
+          <div class="relative h-full bg-surface rounded-2xl p-8 lg:p-10 border border-gray-100 shadow-sm transition-all duration-300 hover:shadow-xl hover:border-primary/10 hover:-translate-y-1">
+
+            <div class="absolute top-6 right-6 w-12 h-12 bg-primary/5 rounded-full flex items-center justify-center">
+              <svg class="w-6 h-6 text-primary" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
+              </svg>
+            </div>
+
+            <blockquote class="text-lg lg:text-xl text-text-primary leading-relaxed mb-8 pr-12">
+              "{{ story.quote }}"
+            </blockquote>
+
+            <div class="flex items-center gap-4">
+              <div class="w-14 h-14 rounded-full overflow-hidden bg-gradient-to-br from-primary to-primary-dark flex items-center justify-center shadow-lg shadow-primary/20">
+                {% if story.avatar %}
+                  <img src="{{ story.avatar }}" alt="{{ story.name }}" class="w-full h-full object-cover">
+                {% else %}
+                  <span class="text-xl font-bold text-white">{{ story.initial }}</span>
+                {% endif %}
+              </div>
+
+              <div class="flex flex-col">
+                <span class="text-base font-bold text-text-primary">{{ story.name }}</span>
+                <span class="text-sm text-text-secondary">
+                  {{ won_label }}
+                  {% if story.prize_url %}
+                    <a href="{{ story.prize_url }}" class="text-primary font-medium">{{ story.prize }}</a>
+                  {% else %}
+                    <span class="text-primary font-medium">{{ story.prize }}</span>
+                  {% endif %}
+                </span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+
+    <!-- Section footer link -->
+    {% if footer_link_text %}
+    <div class="text-center mt-10">
+      <a href="{{ footer_link_url }}" class="inline-flex items-center gap-2 text-primary font-semibold hover:gap-3 transition-all duration-200">
+        {{ footer_link_text }}
+        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+        </svg>
+      </a>
+    </div>
+    {% endif %}
+
+  </div>
+</section>

@@ -1,0 +1,59 @@
+{#
+  NeraAboutUsColumns — view data contract (authoritative source: index.php get_data() PHPDoc)
+  key                          type     req/opt
+  story_left_icon              string   required  Material Symbols ligature
+  story_left_title             string   required
+  story_left_content           string   required  safe HTML paragraphs (or '')
+  story_right_icon             string   required
+  story_right_title            string   required
+  story_right_content          string   required  safe HTML paragraphs (or '')
+  i18n.story_left_placeholder  string   required
+  i18n.story_right_placeholder string   required
+#}
+<section class="py-16 lg:py-24 bg-gray-50 relative overflow-hidden" aria-labelledby="about-us-stories">
+  <div class="max-w-7xl mx-auto px-4 lg:px-0">
+    <div class="grid md:grid-cols-2 gap-10 lg:gap-12">
+      <div
+        class="bg-surface p-8 lg:p-12 rounded-3xl border border-gray-200 shadow-lg transition-all duration-300 hover:border-primary/25 hover:shadow-xl hover:-translate-y-0.5 group"
+        data-aos="fade-right">
+        <div class="flex items-center gap-4 mb-6">
+          <div
+            class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary transition-all duration-300 group-hover:bg-primary group-hover:text-white">
+            <span class="material-symbols-outlined text-2xl" aria-hidden="true">{{ story_left_icon|e }}</span>
+          </div>
+          <h2 class="font-heading font-bold text-2xl lg:text-3xl text-text-primary">
+            {{ story_left_title }}
+          </h2>
+        </div>
+        <div class="text-text-secondary leading-relaxed max-w-none [&_a]:text-primary [&_a]:underline">
+          {% if story_left_content %}
+            {{ story_left_content|raw }}
+          {% else %}
+            <p>{{ i18n.story_left_placeholder }}</p>
+          {% endif %}
+        </div>
+      </div>
+
+      <div
+        class="bg-surface p-8 lg:p-12 rounded-3xl border border-gray-200 shadow-lg transition-all duration-300 hover:border-primary/25 hover:shadow-xl hover:-translate-y-0.5 group"
+        data-aos="fade-left">
+        <div class="flex items-center gap-4 mb-6">
+          <div
+            class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary transition-all duration-300 group-hover:bg-primary group-hover:text-white">
+            <span class="material-symbols-outlined text-2xl" aria-hidden="true">{{ story_right_icon|e }}</span>
+          </div>
+          <h2 class="font-heading font-bold text-2xl lg:text-3xl text-text-primary">
+            {{ story_right_title }}
+          </h2>
+        </div>
+        <div class="text-text-secondary leading-relaxed max-w-none [&_a]:text-primary [&_a]:underline">
+          {% if story_right_content %}
+            {{ story_right_content|raw }}
+          {% else %}
+            <p>{{ i18n.story_right_placeholder }}</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

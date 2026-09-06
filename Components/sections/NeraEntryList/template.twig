@@ -1,0 +1,8 @@
+{#
+  NeraEntryList — view data contract (authoritative source: index.php get_data() PHPDoc)
+  key          type    req/opt   default
+  empty_title  string  required  'No competitions found'
+  empty_text   string  required  'There are no participant lists available yet. Please check back soon.'
+  html         string  required  buffered listing-grid markup
+#}
+{{ html|raw }}

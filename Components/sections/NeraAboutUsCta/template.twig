@@ -1,0 +1,29 @@
+{#
+  NeraAboutUsCta — view data contract (authoritative source: index.php get_data() PHPDoc)
+  key                  type     req/opt
+  cta_heading          string   required
+  cta_description      string   required
+  cta_primary_text     string   required
+  cta_primary_url      string   required
+  cta_secondary_text   string   required
+  cta_secondary_url    string   required
+#}
+<section class="py-16 lg:py-24 text-center relative overflow-hidden bg-surface" aria-labelledby="about-us-cta-heading">
+  <div class="absolute inset-0 bg-gradient-to-b from-transparent via-primary/[0.04] to-transparent pointer-events-none"></div>
+  <div class="max-w-3xl mx-auto px-4 lg:px-8 relative z-10" data-aos="zoom-in">
+    <h2 id="about-us-cta-heading" class="font-heading font-bold text-3xl lg:text-4xl mb-6 text-text-primary">{{ cta_heading }}</h2>
+    <p class="text-lg text-text-secondary mb-10 leading-relaxed">{{ cta_description }}</p>
+    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+      <a
+        href="{{ cta_primary_url }}"
+        class="inline-flex items-center justify-center px-8 py-4 bg-primary text-white font-semibold rounded-2xl shadow-[0_10px_25px_-5px_rgba(19,19,236,0.35)] hover:opacity-95 hover:-translate-y-0.5 transition-all duration-200">
+        {{ cta_primary_text }}
+      </a>
+      <a
+        href="{{ cta_secondary_url }}"
+        class="inline-flex items-center justify-center px-8 py-4 border-2 border-gray-200 text-text-primary font-semibold rounded-2xl hover:border-primary/30 hover:bg-gray-50 transition-all duration-200">
+        {{ cta_secondary_text }}
+      </a>
+    </div>
+  </div>
+</section>

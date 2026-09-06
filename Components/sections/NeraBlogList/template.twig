@@ -1,0 +1,48 @@
+{#
+  NeraBlogList — view data contract (authoritative source: index.php get_data() PHPDoc)
+  List chrome from home.php; cards via parent template-parts/blog/post-card.php.
+  key               type           req/opt   default
+  empty_title       string         required  'No posts found'
+  empty_text        string         required
+  has_posts         bool           required
+  featured_html     string         required  ''   — featured card markup (|raw)
+  cards             list<string>   required  []   — standard card markup (|raw)
+  navigation_html   string         required  ''   — pagination markup (|raw)
+#}
+<section class="bg-background-secondary min-h-screen" aria-label="Blog posts">
+  <div class="max-w-7xl mx-auto px-4 py-10 md:py-12">
+
+    {% if has_posts %}
+      <div class="mx-auto max-w-6xl space-y-8 md:space-y-10 lg:space-y-12">
+        {% if featured_html %}
+          {{ featured_html|raw }}
+        {% endif %}
+
+        {% if cards %}
+          {% for chunk in cards|batch(3) %}
+            <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+              {% for card_html in chunk %}
+                {{ card_html|raw }}
+              {% endfor %}
+            </div>
+          {% endfor %}
+        {% endif %}
+      </div>
+
+      {% if navigation_html %}
+        {{ navigation_html|raw }}
+      {% endif %}
+    {% else %}
+      <div class="text-center py-16">
+        <div class="max-w-md mx-auto">
+          <svg class="w-16 h-16 mx-auto mb-4 text-gray-300" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <path d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
+          </svg>
+          <h2 class="text-2xl font-bold text-text-primary mb-2">{{ empty_title|e('html') }}</h2>
+          <p class="text-text-secondary">{{ empty_text|e('html') }}</p>
+        </div>
+      </div>
+    {% endif %}
+
+  </div>
+</section>

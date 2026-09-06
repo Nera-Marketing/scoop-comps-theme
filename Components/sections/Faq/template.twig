@@ -1,0 +1,62 @@
+{#
+  Faq — child view override (parent get_data + nera_component_data_Faq)
+  key               type                                          req/opt   default
+  title             string                                        required
+  faqs              list<{question:string,answer:string}>          required
+  footer_prefix     string                                        required  Still have questions?
+  footer_link_text  string                                        required  Contact our support team
+  footer_link_url   string                                        required  contact permalink or #
+#}
+<section class="faq-section py-20 bg-surface" id="faq" data-aos="fade-up">
+  <div class="max-w-7xl mx-auto px-4 lg:px-0">
+
+    <div class="text-center mb-12">
+      <h2 class="font-heading text-4xl font-semibold text-text-primary leading-tight tracking-tight">
+        {{ title }}{% if heading_highlight %} <span style="{{ heading_accent_style|raw }}">{{ heading_highlight }}</span>{% endif %}
+      </h2>
+    </div>
+
+    <div x-data="{ activeAccordion: null }">
+      {% for faq in faqs %}
+        <div class="faq-item border-b border-gray-200">
+          <button
+            class="faq-item__question w-full flex justify-between items-center py-6 bg-transparent border-none cursor-pointer text-left focus:outline-none"
+            @click="activeAccordion = activeAccordion === {{ loop.index0 }} ? null : {{ loop.index0 }}"
+            :aria-expanded="activeAccordion === {{ loop.index0 }}"
+            aria-controls="faq-answer-{{ loop.index0 }}">
+            <span class="text-base font-semibold text-text-primary">{{ faq.question }}</span>
+            <span class="faq-item__icon transition-transform duration-300"
+              :class="{ 'rotate-180': activeAccordion === {{ loop.index0 }} }">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M6 9l6 6 6-6" />
+              </svg>
+            </span>
+          </button>
+          <div class="faq-item__answer overflow-hidden" id="faq-answer-{{ loop.index0 }}"
+            x-show="activeAccordion === {{ loop.index0 }}" x-collapse x-cloak>
+            <p class="pb-6 text-text-secondary leading-relaxed">{{ faq.answer }}</p>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+
+    <!-- Section footer link -->
+    {% if footer_link_text or footer_prefix %}
+    <div class="text-center mt-12">
+      <p class="text-text-secondary">
+        {% if footer_prefix %}{{ footer_prefix }}{% endif %}
+        {% if footer_link_text %}
+        <a href="{{ footer_link_url }}"
+          class="inline-flex items-center gap-2 text-primary font-semibold ml-2 hover:gap-3 transition-all duration-200">
+          {{ footer_link_text }}
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14M12 5l7 7-7 7" />
+          </svg>
+        </a>
+        {% endif %}
+      </p>
+    </div>
+    {% endif %}
+
+  </div>
+</section>

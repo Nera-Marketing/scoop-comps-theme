@@ -1,0 +1,224 @@
+/**
+ * Get The Scoop — child theme token bridge. Loaded after parent Vite bundle.
+ * Brief: white canvas, black type, light blue accent — minimal DTC product feel.
+ */
+:root {
+  /* Brand */
+  --color-primary: #5b9bd5;
+  --color-primary-dark: #3d7fb5;
+  --color-accent: #5b9bd5;
+  --color-accent-dark: #3d7fb5;
+  --color-on-primary: #ffffff;
+
+  /* Canvas + surface */
+  --color-background-light: #ffffff;
+  --color-surface: #ffffff;
+
+  /* Text */
+  --color-text-primary: #111111;
+  --color-text-secondary: #6b7280;
+
+  /* Plugin bridge (Nera Core / Fluent / Woo) */
+  --nera-primary: var(--color-primary);
+  --nera-text: var(--color-text-primary);
+  --nera-text-secondary: var(--color-text-secondary);
+  --nera-bg: var(--color-background-light);
+  --nera-surface: var(--color-surface);
+  --nera-border: #e5e7eb;
+}
+
+/* ==========================================================================
+   Header logo size
+   --------------------------------------------------------------------------
+   These rules only work because the child FORK of template-parts/header.php
+   removed the parent's `!max-w-28` class from the logo <img>.
+
+   Do not try to reinstate this as a pure CSS override. Tailwind v4 compiles
+   `!max-w-28` to `max-width: … !important` inside `@layer utilities`, and CSS
+   Cascade 5 compares layer order BEFORE specificity — with the order reversed
+   for important declarations, which puts unlayered `!important` dead last. An
+   unlayered rule here loses at ANY specificity, `#site-header img` included.
+   (The workable CSS-only alternative is to wrap these rules in
+   `@layer utilities { … }` so they merge into the same layer, where specificity
+   applies again. We forked the template instead.)
+
+   No `!important` is needed now: the img carries only `object-contain`, and an
+   unlayered normal declaration outranks Tailwind's layered `@layer utilities`.
+
+   There is exactly one <img> in the header and no avatars, so this selector
+   cannot catch anything else.
+
+   The logo is 800x180 (4.44:1), so 220px renders 49.5px tall inside the
+   `lg:h-20` (80px) desktop row. Mobile steps down to 160px because the `h-16`
+   (64px) row shares 343px of width at a 375px viewport with the cart icon and
+   hamburger (~90px) — 220px there would leave only ~33px of slack and would
+   crowd on a 320px device.
+   ========================================================================== */
+#site-header img {
+  width: 160px;
+  max-width: 100%;
+  height: auto;
+}
+
+@media (min-width: 1024px) {
+  #site-header img {
+    width: 220px;
+  }
+}
+
+/* ==========================================================================
+   Admin bar hides while scrolled
+   --------------------------------------------------------------------------
+   Paired with assets/js/adminbar-scroll.js, which toggles the class below at
+   scrollY >= 4. Only `transform` is animated — core's `html { margin-top }`
+   is left alone, so nothing reflows.
+   ========================================================================== */
+#wpadminbar {
+  transition: transform 0.25s ease;
+}
+
+#wpadminbar.scoop-adminbar--hidden {
+  transform: translateY(-100%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #wpadminbar {
+    transition: none;
+  }
+}
+
+/* ==========================================================================
+   Footer brand logo
+   --------------------------------------------------------------------------
+   `the_custom_logo()` emits <a class="custom-logo-link"><img class="custom-logo">
+   carrying the attachment's own width/height attributes, so it is sized here
+   rather than inline. Footer ground is `bg-surface` (white), so no inversion is
+   needed.
+
+   Flat 220px on purpose — it matches the header's DESKTOP width at every
+   breakpoint. Deliberately NOT the header's responsive pair: the brand column is
+   ~343px wide at its narrowest (mobile, `grid-cols-1`) with nothing competing for
+   the space, unlike the header row which shares 343px with a cart icon and
+   hamburger. Consequence to leave alone: below 1024px the footer logo (220px)
+   renders larger than the header logo (160px). That is intended, not a bug.
+   ========================================================================== */
+.ncs-site-footer .custom-logo {
+  width: 220px;
+  max-width: 100%;
+  height: auto;
+}
+
+/* ==========================================================================
+   Legal pages (Privacy Policy / Terms)
+   --------------------------------------------------------------------------
+   Brief: white canvas, black type, light blue accent, generous whitespace.
+   Signature: a single left-edge accent on the lede / “Last updated” line —
+   document stamp, not decoration. Clause numbers are real legal structure
+   (not decorative markers). Reading measure stays narrow.
+   ========================================================================== */
+body.privacy-policy .site-main,
+body.page-template-default.page .site-main:has(.scoop-legal-doc),
+body.page-template-default.page .site-main:has(.scoop-legal-updated) {
+  max-width: 42rem;
+}
+
+body.privacy-policy .site-main > article,
+body.page-template-default.page .site-main:has(.scoop-legal-doc) > article,
+body.page-template-default.page .site-main:has(.scoop-legal-updated) > article {
+  color: var(--color-text-primary);
+}
+
+body.privacy-policy .site-main > article > header h1,
+body.page-template-default.page .site-main:has(.scoop-legal-doc) > article > header h1,
+body.page-template-default.page .site-main:has(.scoop-legal-updated) > article > header h1 {
+  letter-spacing: -0.02em;
+  margin-bottom: 0.5rem;
+}
+
+.scoop-legal-updated,
+.scoop-legal-lede {
+  display: inline-block;
+  margin: 0 0 2.5rem;
+  padding: 0.15rem 0 0.15rem 0.85rem;
+  border-left: 2px solid var(--color-primary);
+  color: var(--color-text-secondary);
+}
+
+.scoop-legal-updated {
+  font-size: 0.8125rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.scoop-legal-lede {
+  font-size: 1rem;
+  line-height: 1.6;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+body.privacy-policy h2.wp-block-heading,
+body.page-template-default.page .site-main:has(.scoop-legal-doc) h2.wp-block-heading,
+body.page-template-default.page .site-main:has(.scoop-legal-updated) h2.wp-block-heading {
+  margin-top: 2.75rem;
+  margin-bottom: 0.85rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--color-text-primary);
+}
+
+body.page-template-default.page .site-main:has(.scoop-legal-doc) h3.wp-block-heading {
+  margin-top: 1.5rem;
+  margin-bottom: 0.4rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--color-text-primary);
+}
+
+body.privacy-policy .wp-block-paragraph,
+body.page-template-default.page .site-main:has(.scoop-legal-doc) .wp-block-paragraph,
+body.page-template-default.page .site-main:has(.scoop-legal-updated) .wp-block-paragraph {
+  margin: 0 0 1.15rem;
+  color: var(--color-text-secondary);
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+body.privacy-policy .wp-block-paragraph strong,
+body.page-template-default.page .site-main:has(.scoop-legal-doc) .wp-block-paragraph strong,
+body.page-template-default.page .site-main:has(.scoop-legal-updated) .wp-block-paragraph strong {
+  color: var(--color-text-primary);
+  font-weight: 600;
+}
+
+body.privacy-policy .wp-block-paragraph a,
+body.page-template-default.page .site-main:has(.scoop-legal-doc) .wp-block-paragraph a,
+body.page-template-default.page .site-main:has(.scoop-legal-updated) .wp-block-paragraph a {
+  color: var(--color-primary);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+body.privacy-policy .wp-block-list,
+body.page-template-default.page .site-main:has(.scoop-legal-doc) .wp-block-list,
+body.page-template-default.page .site-main:has(.scoop-legal-updated) .wp-block-list,
+body.page-template-default.page .site-main:has(.scoop-legal-doc) .wp-block-list ul {
+  margin: 0 0 1.15rem;
+  padding-left: 1.25rem;
+  list-style: none;
+  color: var(--color-text-secondary);
+  line-height: 1.7;
+}
+
+body.page-template-default.page .site-main:has(.scoop-legal-doc) .wp-block-list ul {
+  margin: 0.5rem 0 0;
+}
+
+body.privacy-policy .wp-block-list li + li,
+body.page-template-default.page .site-main:has(.scoop-legal-doc) .wp-block-list li + li,
+body.page-template-default.page .site-main:has(.scoop-legal-updated) .wp-block-list li + li {
+  margin-top: 0.35rem;
+}
+
